@@ -11,13 +11,13 @@
         <div class='pswp__top-bar'>
           <div class='pswp__counter'/>
           <button class='pswp__button pswp__button--close'
-            title='关闭 (Esc)'/>
+            :title='$t(`close`)'/>
           <button class='pswp__button pswp__button--share'
-            title='分享'/>
+            :title='$t(`share`)'/>
           <button class='pswp__button pswp__button--fs'
-            title='全屏切换'/>
+            :title='$t(`fs`)'/>
           <button class='pswp__button pswp__button--zoom'
-            title='放大/缩小'/>
+            :title='$t(`zoom`)'/>
           <div class='pswp__preloader'>
             <div class='pswp__preloader__icn'>
               <div class='pswp__preloader__cut'>
@@ -31,9 +31,9 @@
           <div class='pswp__share-tooltip'/>
         </div>
         <button class='pswp__button pswp__button--arrow--left'
-          title='上一张 (arrow left)'/>
+          :title='$t(`arrowLeft`)'/>
         <button class='pswp__button pswp__button--arrow--right'
-          title='下一张 (arrow right)'/>
+          :title='$t(`arrowRight`)'/>
         <div class='pswp__caption'>
           <div class='pswp__caption__center'/>
         </div>
@@ -51,6 +51,18 @@ import 'photoswipe/dist/default-skin/default-skin.css'
 
 export default {
   name: 'v-photoswipe',
+  data () {
+    return {
+      defaultLabels: {
+        close: 'Close',
+        share: 'Share',
+        fs: 'Close',
+        zoom: 'Close',
+        arrowLeft: 'arrow left',
+        arrowRight: 'arrow right'
+      }
+    }
+  },
   props: {
     isOpen: {
       type: Boolean,
@@ -62,8 +74,12 @@ export default {
     },
     options: {
       type: Object,
-      default: {}
-    }
+      default: () => ({})
+    },
+    labels: {
+      type: Object,
+      default: () => ({})
+    },
   },
   watch: {
     items: {
@@ -87,6 +103,12 @@ export default {
       } else {
         this.close()
       }
+    }
+  },
+  computed: {
+    $t () {
+      const labels = { ...this.defaultLabels, ...this.labels }
+      return (k) => labels[k] || k
     }
   },
   methods: {
